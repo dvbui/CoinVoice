@@ -11,11 +11,13 @@ client = discord.Client()
 CLIENT_TOKEN_FILE = "client_token.txt"
 VOICE_CHANNEL_FILE = "voice_channel.txt"
 USER_DATA_FILE = "user_data_file.json"
+MENU_DATA = "role_menu.txt"
 ITERATION = 1
 UNIT_MONEY = 1
 
 user_data = {}
 voice_channel = {}
+role_menu = {}
 
 
 def get_client_token():
@@ -40,6 +42,20 @@ def load_voice_channel():
     f.close()
     for line in s:
         voice_channel[int(line.strip())] = ""
+
+
+def load_role_menu():
+    global role_menu
+    f = open(MENU_DATA, "r")
+    s = f.read().strip().split('\n')
+    f.close()
+    for line in s:
+        element = line.split(' ')
+        if len(element) != 2:
+            return
+        role_id = int(element[0])
+        role_price = int(element[1])
+        role_menu[role_id] = role_price
 
 
 def save_user_data():
@@ -85,13 +101,20 @@ async def on_ready():
     print("Bot is ready.")
     load_user_data()
     load_voice_channel()
+    load_role_menu()
     await main_loop()
+
 
 def to_int(x):
     try:
         return int(x)
     except ValueError:
         return -1
+
+
+async def give_role(member, role):
+    await member.add_roles(role)
+
 
 @client.event
 async def on_message(message):
@@ -113,10 +136,30 @@ async def on_message(message):
         await send_message(message.channel, "You have {} coins.".format(coin))
 
     if len(args) == 2 and args[1] == "menu":
-        pass
+        await send_message(message.channel, "```\n" + messenger.role_menu(message, role_menu) + "```\n")
 
     if len(args) == 3 and args[1] == "buy":
-        pass
+        role_index = to_int(args[2])
+        if not (1 <= role_index <= len(role_menu)):
+            return
+        cnt = 0
+        selected_role = None
+        selected_role_id = None
+        for role_id in role_menu:
+            cnt += 1
+            if cnt == role_index:
+                selected_role_id = role_id
+                selected_role = discord.utils.get(message.guild.roles, id=role_id)
+                break
+
+        price = role_menu[selected_role_id]
+        if user_data[str(message.author.id)] >= price:
+            await give_role(message.author, selected_role)
+            user_data[str(message.author.id)] -= price
+            save_user_data()
+            await send_message(message.channel, "Role granted!")
+        else:
+            await send_message(message.channel, "You do not have enough money.")
 
 
 client.run(get_client_token())

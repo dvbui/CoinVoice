@@ -1,6 +1,9 @@
+import discord
+
 NAME_HEADER = "Name"
 SCORE_HEADER = "Score"
 ID_HEADER = "Rank"
+ROLE_MENU_HEADER = "Role Menu"
 
 
 def fitting(s, length):
@@ -8,7 +11,6 @@ def fitting(s, length):
 
 
 def rank_list(client, user_data, number_of_players=10, max_length_string=1992):
-    result = ""
     number_of_players = min(number_of_players, len(user_data))
     user_list = [[x, y] for x, y in user_data.items()]
     user_list.sort(key=lambda u: -u[1])
@@ -57,5 +59,13 @@ def rank_list(client, user_data, number_of_players=10, max_length_string=1992):
     return res[0:min(max_length_string, len(res))]
 
 
+def role_menu(message, role_data, max_length_string=1992):
+    res = ROLE_MENU_HEADER+"\n"
+    cnt = 0
+    for role_id in role_data:
+        role = discord.utils.get(message.guild.roles, id=role_id)
+        cnt += 1
+        res += str(cnt)+". "+role.name+" ({} coins)".format(role_data[role_id])+"\n"
+    return res[0:min(max_length_string, len(res))]
 
 
