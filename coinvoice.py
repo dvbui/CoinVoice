@@ -87,6 +87,11 @@ async def on_ready():
     load_voice_channel()
     await main_loop()
 
+def to_int(x):
+    try:
+        return int(x)
+    except ValueError:
+        return -1
 
 @client.event
 async def on_message(message):
@@ -99,6 +104,19 @@ async def on_message(message):
 
     if len(args) == 2 and args[1] == "rank":
         await send_message(message.channel, "```\n" + messenger.rank_list(client, user_data) + "```\n")
+
+    if len(args) == 2 and args[1] == "account":
+        user_id = message.author.id
+        coin = 0
+        if str(user_id) in user_data:
+            coin = user_data[str(user_id)]
+        await send_message(message.channel, "You have {} coins.".format(coin))
+
+    if len(args) == 2 and args[1] == "menu":
+        pass
+
+    if len(args) == 3 and args[1] == "buy":
+        pass
 
 
 client.run(get_client_token())
