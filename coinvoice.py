@@ -112,9 +112,18 @@ def to_int(x):
         return -1
 
 
-async def give_role(member, role):
-    await member.add_roles(role)
+def to_user_id(s):
+    s = s.replace("<", "")
+    s = s.replace(">", "")
+    s = s.replace("@", "")
+    return to_int(s)
 
+
+async def give_role(member, role):
+    try:
+        await member.add_roles(role)
+    except:
+        print("Can't give role")
 
 @client.event
 async def on_message(message):
@@ -153,13 +162,30 @@ async def on_message(message):
                 break
 
         price = role_menu[selected_role_id]
-        if user_data[str(message.author.id)] >= price:
+        if str(message.author.id) in user_data and user_data[str(message.author.id)] >= price:
             await give_role(message.author, selected_role)
             user_data[str(message.author.id)] -= price
             save_user_data()
             await send_message(message.channel, "Role granted!")
         else:
             await send_message(message.channel, "You do not have enough money.")
+
+    if len(args) == 4 and args[1] == "give" and to_user_id(args[2]) != -1 and to_int(args[3]) >= 0:
+        recipient_id = to_user_id(args[2])
+        money = to_int(args[3])
+
+        if str(message.author.id) in user_data and user_data[str(message.author.id)] >= money:
+            user_data[str(message.author.id)] -= money
+            if str(recipient_id) in user_data:
+                user_data[str(recipient_id)] += money
+            else:
+                user_data[str(recipient_id)] = money
+
+            await send_message(message.channel, "Money transferred!")
+        else:
+            await send_message(message.channel, "You do not have enough money.")
+
+        save_user_data()
 
 
 client.run(get_client_token())
