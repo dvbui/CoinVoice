@@ -168,6 +168,11 @@ async def on_message(message):
                 break
 
         price = role_menu[selected_role_id]
+
+        if selected_role in message.author.roles:
+            await send_message(message.channel, "You have already had that role.")
+            return
+
         if str(message.author.id) in user_data and user_data[str(message.author.id)] >= price:
             await give_role(message.author, selected_role)
             user_data[str(message.author.id)] -= price
