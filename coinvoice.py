@@ -60,9 +60,12 @@ def load_role_menu():
 
 def save_user_data():
     global user_data
-    f = open(USER_DATA_FILE, "w")
-    f.write(json.dumps(user_data))
-    f.close()
+    try:
+        f = open(USER_DATA_FILE, "w")
+        f.write(json.dumps(user_data))
+        f.close()
+    except:
+        print("Can't save user data")
 
 
 async def main_loop():
@@ -82,7 +85,6 @@ async def main_loop():
         else:
             user_data[member_id] = UNIT_MONEY
 
-    #print(messenger.rank_list(client, user_data, 10))
     save_user_data()
 
     await asyncio.sleep(ITERATION)
