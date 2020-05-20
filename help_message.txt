@@ -1,0 +1,5 @@
+coin rank                      - Xem rank
+coin account                   - Xem số tiền mình đang có
+coin menu                      - Xem các roles có thể mua
+coin buy [id]                  - Mua role có số hiệu id. Để xem số hiệu, dùng lệnh coin menu
+coin give @[ai đó] [số tiền]   - Gửi ai đó một số tiền từ tài khoản của bạn.

@@ -4,13 +4,24 @@ NAME_HEADER = "Name"
 SCORE_HEADER = "Score"
 ID_HEADER = "Rank"
 ROLE_MENU_HEADER = "Role Menu"
+HELP_MESSAGE_FILE = "help_message.txt"
+
+
+help_message_data = ""
+
+def load_help_message():
+    f = open(HELP_MESSAGE_FILE, "r")
+    global help_message_data
+    help_message_data = f.read().strip()
 
 
 def fitting(s, length):
+    print(s+" "+str(len(s)))
+    print(length)
     return s + " " * max(0, (length - len(s)))
 
 
-def rank_list(client, user_data, number_of_players=10, max_length_string=1992):
+def rank_list(client, user_data, number_of_players=10, max_length_string=1992, deliminator=" | "):
     number_of_players = min(number_of_players, len(user_data))
     user_list = [[x, y] for x, y in user_data.items()]
     user_list.sort(key=lambda u: -u[1])
@@ -38,7 +49,7 @@ def rank_list(client, user_data, number_of_players=10, max_length_string=1992):
     score_header = fitting(SCORE_HEADER, max_score_length)
     id_header = fitting(ID_HEADER, len(str(number_of_players)))
 
-    header = id_header + " " + name_header + " " + score_header
+    header = id_header + deliminator + name_header + deliminator + score_header
     barrier = "-" * len(header)
     res = header + "\n" + barrier + "\n"
 
@@ -51,7 +62,7 @@ def rank_list(client, user_data, number_of_players=10, max_length_string=1992):
             id_str = fitting(str(inserted), max_id_length)
             member_name = fitting(str(member), max_user_length)
             score_str = fitting(str(user_list[current][1]), max_score_length)
-            res += id_str + " " + member_name + " " + score_str + "\n"
+            res += id_str + deliminator + member_name + deliminator + score_str + "\n"
             if inserted == number_of_players:
                 break
         current += 1
@@ -69,3 +80,5 @@ def role_menu(message, role_data, max_length_string=1992):
     return res[0:min(max_length_string, len(res))]
 
 
+def help_message():
+    return "```\n"+help_message_data+"```\n"
