@@ -39,6 +39,9 @@ UNIT_MONEY = 2
 ```
 ## Chạy bot
 Mở Command Prompt trong thư mục mã nguồn, rồi gõ lệnh
+
 ```python coinvoice.py```
-Nếu xuất hiện lỗi gì thì bạn có thể thông báo cho mình.
+
+Nếu xuất hiện lỗi gì thì bạn có thể thông báo cho mình bằng cách chụp ảnh và gửi qua Discord.
+
 Bot nên được chạy trên một máy có kết nối mạng 24 giờ mỗi ngày, và nên được tắt đi bật lại khoảng một lần mỗi ngày (có thể chọn lúc ít người dùng để khởi động lại)
