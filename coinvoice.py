@@ -12,8 +12,8 @@ CLIENT_TOKEN_FILE = "client_token.txt"
 VOICE_CHANNEL_FILE = "voice_channel.txt"
 USER_DATA_FILE = "user_data_file.json"
 MENU_DATA = "role_menu.txt"
-ITERATION = 1
-UNIT_MONEY = 1
+ITERATION = 60
+UNIT_MONEY = 2
 
 user_data = {}
 voice_channel = {}
@@ -81,13 +81,13 @@ async def main_loop():
 
     for member_id in total:
         if member_id in user_data:
-            user_data[member_id] += UNIT_MONEY
+            user_data[member_id] += UNIT_MONEY / ITERATION
         else:
-            user_data[member_id] = UNIT_MONEY
+            user_data[member_id] = UNIT_MONEY / ITERATION
 
     save_user_data()
 
-    await asyncio.sleep(ITERATION)
+    await asyncio.sleep(1)
     await main_loop()
 
 

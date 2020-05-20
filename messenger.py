@@ -36,7 +36,7 @@ def rank_list(client, user_data, number_of_players=10, max_length_string=1992, d
         if not (member is None):
             inserted += 1
             max_user_length = max(max_user_length, len(str(member)))
-            max_score_length = max(max_score_length, len(str(user_list[current][1])))
+            max_score_length = max(max_score_length, len("{:.2f}".format(user_list[current][1])))
             if inserted == number_of_players:
                 break
         current += 1
@@ -60,7 +60,7 @@ def rank_list(client, user_data, number_of_players=10, max_length_string=1992, d
             inserted += 1
             id_str = fitting(str(inserted), max_id_length)
             member_name = fitting(str(member), max_user_length)
-            score_str = fitting(str(user_list[current][1]), max_score_length)
+            score_str = fitting("{:.2f}".format(user_list[current][1]), max_score_length)
             res += id_str + deliminator + member_name + deliminator + score_str + "\n"
             if inserted == number_of_players:
                 break
