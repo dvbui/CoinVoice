@@ -12,8 +12,8 @@ CLIENT_TOKEN_FILE = "client_token.txt"
 VOICE_CHANNEL_FILE = "voice_channel.txt"
 USER_DATA_FILE = "user_data_file.json"
 MENU_DATA = "role_menu.txt"
-ITERATION = 60
-UNIT_MONEY = 2
+ITERATION = 1
+UNIT_MONEY = 1
 
 user_data = {}
 voice_channel = {}
@@ -148,7 +148,7 @@ async def on_message(message):
         coin = 0
         if str(user_id) in user_data:
             coin = user_data[str(user_id)]
-        await send_message(message.channel, "You have {} coins.".format(coin))
+        await send_message(message.channel, "You have {} coins.".format("{:.2f}".format(coin)))
 
     if len(args) == 2 and args[1] == "menu":
         await send_message(message.channel, "```\n" + messenger.role_menu(message, role_menu) + "```\n")
