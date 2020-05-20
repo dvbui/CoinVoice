@@ -1,7 +1,7 @@
 import discord
 
 NAME_HEADER = "Name"
-SCORE_HEADER = "Score"
+SCORE_HEADER = "Coins"
 ID_HEADER = "Rank"
 ROLE_MENU_HEADER = "Role Menu"
 HELP_MESSAGE_FILE = "help_message.txt"
