@@ -9,6 +9,7 @@ HELP_MESSAGE_FILE = "help_message.txt"
 
 help_message_data = ""
 
+
 def load_help_message():
     f = open(HELP_MESSAGE_FILE, "r")
     global help_message_data
@@ -16,8 +17,6 @@ def load_help_message():
 
 
 def fitting(s, length):
-    print(s+" "+str(len(s)))
-    print(length)
     return s + " " * max(0, (length - len(s)))
 
 
