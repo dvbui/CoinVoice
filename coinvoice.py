@@ -93,6 +93,7 @@ async def main_loop():
 
 async def send_message(channel, content):
     try:
+        print(str(channel)+" "+str(content))
         await channel.send(content)
     except:
         print("Can't send message")
